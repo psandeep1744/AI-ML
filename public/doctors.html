@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Find Verified Doctors in Bengaluru — Kynovia AI</title>
+  <meta name="description" content="Discover and book appointments with board-certified physicians in Bengaluru, Karnataka, India." />
+
+  <!-- Fonts & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+  <!-- Bootstrap 5.3.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Custom Stitch UI Theme -->
+  <link href="/css/stitch-theme.css" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="kyn-navbar sticky-top">
+    <div class="container-xl h-100 d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center gap-4">
+        <a href="/" class="d-flex align-items-center gap-2.5 text-decoration-none">
+          <img
+            src="https://lh3.googleusercontent.com/aida/AEtjO1Xx-kJ2Q-LJKYwuLn-WuEUC3SMm5m67OnsT3jO0fA1xDtuYT7zJx7yQ8Yfw9b4nIAitmuCVI74cCRyAkxKIgQaIRF-qU-qc_dPR6FsBoJ72WOumBv1I62H-IBQEoQClQRufDi5WUZA3mCdNhcPRz3poGGBKAw55PwU2GfFNAi1OH92xf0Q0NoWt22bw8PROz9nC1NpS572uaj07GImVXd-fohHA8DXpjMal402cCeC9A3TfDvMOUnsubwp35pbcooGPqngVZUYkLOA"
+            alt="Kynovia AI Logo"
+            class="kyn-logo-img"
+          />
+          <div class="d-flex flex-column">
+            <span class="font-headline font-weight-bold text-dark text-uppercase" style="font-size: 1.05rem; line-height: 1;">Kynovia</span>
+            <span class="font-body text-uppercase font-weight-bold" style="font-size: 9px; color: var(--kyn-teal); letter-spacing: 0.08em;">Find Doctors</span>
+          </div>
+        </a>
+
+        <nav class="d-none d-lg-flex align-items-center gap-1">
+          <a href="/" class="kyn-nav-link">Dashboard</a>
+          <a href="/doctors.html" class="kyn-nav-link active">Find Doctors</a>
+          <a href="/appointments.html" class="kyn-nav-link">Appointments</a>
+          <a href="/recommend.html" class="kyn-nav-link d-flex align-items-center gap-1">
+            <span class="material-symbols-outlined text-teal" style="font-size: 16px;">neurology</span>
+            <span>AI Health Triaging</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="d-flex align-items-center gap-2.5">
+        <div class="d-none d-md-flex align-items-center gap-1.5 px-2.5 py-1 rounded-pill bg-light border text-muted" style="font-size: 11px; font-weight: 600;">
+          <span class="material-symbols-outlined text-primary" style="font-size: 14px;">location_on</span>
+          <span>Bengaluru, KA</span>
+        </div>
+
+        <button onclick="UI.openEmergencyModal()" class="btn btn-sm btn-outline-danger font-weight-bold d-flex align-items-center gap-1 rounded-3 py-1 px-2.5" style="font-size: 11px;">
+          <span class="material-symbols-outlined" style="font-size: 15px;">emergency</span>
+          <span class="d-none d-sm-inline">Emergency 112</span>
+        </button>
+
+        <div id="navbar-user-slot" class="ms-1"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Directory Container -->
+  <main class="container-xl py-4">
+    <!-- Header Search Bar & Controls -->
+    <div class="kyn-card p-4 mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2 text-muted" style="font-size: 11px;">
+        <div class="d-flex align-items-center gap-1 font-weight-bold">
+          <span>Clinical Network</span>
+          <span>&gt;</span>
+          <span class="text-primary">Bengaluru Specialist Directory</span>
+        </div>
+        <div class="badge bg-light text-muted border">Operational Hub: Bengaluru, Karnataka (₹ INR)</div>
+      </div>
+
+      <h1 class="font-headline font-weight-bold text-dark mb-1" style="font-size: 1.8rem;">
+        Find Verified Clinical Specialists & Physicians
+      </h1>
+      <p class="text-muted mb-3" style="font-size: 0.85rem;">
+        Instant booking with real-time EHR availability across verified hospitals in Bengaluru, Karnataka.
+      </p>
+
+      <!-- Search Input Grid -->
+      <div class="row g-2 p-2 bg-light rounded-3 border">
+        <div class="col-12 col-md-5">
+          <div class="input-group input-group-sm bg-white rounded-3 border overflow-hidden">
+            <span class="input-group-text bg-white border-0 text-muted">
+              <span class="material-symbols-outlined" style="font-size: 18px;">search</span>
+            </span>
+            <input
+              type="text"
+              id="search-input"
+              class="form-control border-0 shadow-none ps-0"
+              placeholder="Search doctor name, specialization, hospital..."
+            />
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <select id="area-select" class="form-select form-select-sm border-0 shadow-none bg-white rounded-3 border">
+            <option value="All">All Bengaluru Areas</option>
+            <option value="Indiranagar">Indiranagar</option>
+            <option value="Koramangala">Koramangala</option>
+            <option value="Whitefield">Whitefield</option>
+            <option value="HSR Layout">HSR Layout</option>
+            <option value="Jayanagar">Jayanagar</option>
+            <option value="Lavelle Road">Lavelle Road / Central</option>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-3 d-flex gap-2">
+          <select id="mode-select" class="form-select form-select-sm border-0 shadow-none bg-white rounded-3 border">
+            <option value="all">All Consultation Modes</option>
+            <option value="telehealth">Telehealth Only</option>
+            <option value="clinic">In-Clinic Visit</option>
+          </select>
+          <button id="search-btn" class="btn btn-sm kyn-btn-primary px-3 shrink-0">
+            <span>Filter</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Filter Pills -->
+      <div class="d-flex align-items-center gap-1.5 overflow-x-auto pt-3 no-scrollbar" id="specialty-pills">
+        <button class="kyn-pill-btn active" data-spec="All">All Specialties</button>
+        <button class="kyn-pill-btn" data-spec="Cardiovascular Medicine">Cardiology</button>
+        <button class="kyn-pill-btn" data-spec="Adult & Pediatric Neurology">Neurology</button>
+        <button class="kyn-pill-btn" data-spec="Dermatology & Oncology">Dermatology</button>
+        <button class="kyn-pill-btn" data-spec="Orthopedic Surgery">Orthopedics</button>
+        <button class="kyn-pill-btn" data-spec="Internal Medicine">Internal Medicine</button>
+      </div>
+    </div>
+
+    <!-- Doctor List & Results Counter -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex align-items-center gap-2">
+        <span class="spinner-grow spinner-grow-sm text-teal" style="width: 8px; height: 8px;"></span>
+        <span class="font-headline font-weight-bold text-dark" style="font-size: 1.05rem;" id="results-count">Loading verified doctors...</span>
+      </div>
+      <div class="text-muted small">Prices in <strong>₹ INR</strong></div>
+    </div>
+
+    <!-- Doctors Cards Container -->
+    <div class="row g-4" id="doctors-list">
+      <!-- Injected via JavaScript from real database -->
+    </div>
+  </main>
+
+  <!-- Doctor Profile Modal -->
+  <div class="modal fade" id="doctorProfileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-xl overflow-hidden" id="profile-modal-content">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Book Appointment Modal -->
+  <div class="modal fade" id="bookAppointmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-xl overflow-hidden">
+        <div class="modal-header p-4 bg-light border-bottom">
+          <div class="d-flex align-items-center gap-3">
+            <img id="book-modal-doc-img" src="" alt="Doctor" class="rounded-3 object-fit-cover border" style="width: 48px; height: 48px;" />
+            <div>
+              <span class="text-uppercase text-primary font-weight-bold d-block" style="font-size: 10px;">Book Consultation</span>
+              <h5 class="font-headline font-weight-bold text-dark mb-0" id="book-modal-doc-name">Doctor Name</h5>
+              <span class="text-muted" style="font-size: 11px;" id="book-modal-doc-spec">Specialization</span>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <form id="book-appointment-form" class="modal-body p-4" style="font-size: 0.85rem;">
+          <input type="hidden" id="book-doc-id" />
+
+          <!-- Consultation Mode -->
+          <div class="mb-3">
+            <label class="form-label font-weight-bold text-dark">Consultation Mode</label>
+            <div class="btn-group w-100" role="group">
+              <input type="radio" class="btn-check" name="consult-mode" id="mode-tele" value="telehealth" checked />
+              <label class="btn btn-outline-primary text-dark font-weight-bold d-flex align-items-center justify-content-center gap-1 py-2" for="mode-tele">
+                <span class="material-symbols-outlined" style="font-size: 16px;">videocam</span> Telehealth Video
+              </label>
+
+              <input type="radio" class="btn-check" name="consult-mode" id="mode-clinic" value="clinic" />
+              <label class="btn btn-outline-primary text-dark font-weight-bold d-flex align-items-center justify-content-center gap-1 py-2" for="mode-clinic">
+                <span class="material-symbols-outlined" style="font-size: 16px;">domain</span> In-Clinic (Bengaluru)
+              </label>
+            </div>
+          </div>
+
+          <!-- Date Picker -->
+          <div class="mb-3">
+            <label class="form-label font-weight-bold text-dark">Select Date</label>
+            <input type="date" id="book-date" class="form-control" required />
+            <div class="form-text text-muted" style="font-size: 11px;">Working days: Monday through Saturday.</div>
+          </div>
+
+          <!-- Time Slot Selection -->
+          <div class="mb-3">
+            <label class="form-label font-weight-bold text-dark">Select Time Slot</label>
+            <select id="book-time" class="form-select" required>
+              <option value="09:30">09:30 AM IST</option>
+              <option value="11:00">11:00 AM IST</option>
+              <option value="14:30" selected>02:30 PM IST</option>
+              <option value="16:00">04:00 PM IST</option>
+              <option value="17:30">05:30 PM IST</option>
+            </select>
+          </div>
+
+          <!-- Reason for visit -->
+          <div class="mb-3">
+            <label class="form-label font-weight-bold text-dark">Reason for Consultation</label>
+            <textarea id="book-reason" class="form-control" rows="2" placeholder="Briefly describe your symptoms or reason for visit..."></textarea>
+          </div>
+
+          <!-- Pricing Breakdown (Transparent ₹ INR) -->
+          <div class="p-3 bg-light rounded-3 border mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="text-muted">Doctor Consultation Fee</span>
+              <span class="font-weight-bold text-dark" id="book-fee-display">₹800</span>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span class="text-muted">Platform Fee</span>
+              <span class="text-success font-weight-bold">₹0</span>
+            </div>
+            <hr class="my-2">
+            <div class="d-flex justify-content-between">
+              <span class="font-weight-bold text-dark">Total Payable at Clinic/Post-Consult</span>
+              <span class="font-headline font-weight-bold text-teal" style="font-size: 1.1rem;" id="book-total-display">₹800</span>
+            </div>
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" id="book-submit-btn" class="kyn-btn-primary py-2.5 font-weight-bold">
+              <span>Confirm & Secure Slot</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+  <script>
+    let currentSpecialty = 'All';
+
+    async function loadDoctors() {
+      const container = document.getElementById('doctors-list');
+      const countEl = document.getElementById('results-count');
+      const query = document.getElementById('search-input').value.trim();
+      const area = document.getElementById('area-select').value;
+      const mode = document.getElementById('mode-select').value;
+
+      try {
+        const res = await API.getDoctors({
+          query,
+          specialization: currentSpecialty,
+          area,
+          mode,
+        });
+
+        countEl.innerText = `${res.doctors.length} Verified Specialists in Bengaluru`;
+
+        if (res.doctors.length === 0) {
+          container.innerHTML = `
+            <div class="col-12 py-5 text-center text-muted">
+              <span class="material-symbols-outlined" style="font-size: 36px;">person_search</span>
+              <h5 class="mt-2">No doctors found matching your filter criteria.</h5>
+              <p class="small">Try selecting "All Specialties" or "All Bengaluru Areas".</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = res.doctors.map(doc => `
+          <div class="col-12 col-md-6 col-xl-4">
+            <article class="kyn-card p-4 h-100 d-flex flex-column justify-content-between shadow-xs">
+              <div>
+                <div class="d-flex align-items-start gap-3 mb-3">
+                  <div class="position-relative shrink-0">
+                    <img src="${doc.image_url}" alt="${doc.name}" class="rounded-circle object-fit-cover border shadow-xs" style="width: 64px; height: 64px;" />
+                    <span class="position-absolute bottom-0 end-0 bg-white rounded-circle p-0.5 shadow-xs border">
+                      <span class="material-symbols-outlined text-teal" style="font-size: 14px;">verified</span>
+                    </span>
+                  </div>
+                  <div class="flex-grow-1 min-w-0">
+                    <h5 class="font-headline font-weight-bold text-dark mb-0 text-truncate" style="font-size: 1rem;">${doc.name}</h5>
+                    <span class="text-teal font-weight-bold d-block text-truncate" style="font-size: 11px;">${doc.specialization}</span>
+                    <div class="d-flex align-items-center gap-1.5 text-muted mt-1" style="font-size: 11px;">
+                      <span class="font-weight-bold text-dark">★ ${doc.rating}</span>
+                      <span>(${doc.reviews_count} reviews)</span>
+                      <span>•</span>
+                      <span>${doc.experience_years} yrs exp</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-2.5 bg-light rounded-3 mb-2.5" style="font-size: 11px;">
+                  <div class="d-flex align-items-center gap-1 text-muted mb-1">
+                    <span class="material-symbols-outlined text-primary" style="font-size: 14px;">location_on</span>
+                    <span class="text-truncate">${doc.hospital_affiliation} (${doc.area})</span>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span class="text-muted">Consultation Fee</span>
+                    <span class="kyn-badge-rupee font-headline">${UI.formatINR(doc.consultation_fee)}</span>
+                  </div>
+                </div>
+
+                <!-- Instant 1-Click Available Time Slots -->
+                <div class="mb-3">
+                  <span class="text-muted d-block font-weight-bold mb-1" style="font-size: 10px; letter-spacing: 0.04em;">NEXT AVAILABLE TODAY (IST)</span>
+                  <div class="d-flex gap-1.5 flex-wrap">
+                    <button type="button" onclick="openBookingModalWithSlot('${doc.id}', '11:00')" class="btn btn-sm btn-outline-secondary rounded-2 py-1 px-2 font-weight-bold" style="font-size: 11px;">11:00 AM</button>
+                    <button type="button" onclick="openBookingModalWithSlot('${doc.id}', '14:30')" class="btn btn-sm btn-outline-secondary rounded-2 py-1 px-2 font-weight-bold" style="font-size: 11px;">02:30 PM</button>
+                    <button type="button" onclick="openBookingModalWithSlot('${doc.id}', '17:00')" class="btn btn-sm btn-outline-secondary rounded-2 py-1 px-2 font-weight-bold" style="font-size: 11px;">05:00 PM</button>
+                  </div>
+                </div>
+
+                <p class="text-muted mb-3 line-clamp-2" style="font-size: 0.78rem; line-height: 1.4;">
+                  ${doc.bio}
+                </p>
+              </div>
+
+              <div class="d-flex gap-2 pt-2 border-top">
+                <button onclick="openDoctorProfile('${doc.id}')" class="btn btn-sm btn-white border flex-grow-1 font-weight-bold py-2" style="font-size: 12px;">
+                  View Profile
+                </button>
+                <button onclick="openBookingModal('${doc.id}')" class="btn btn-sm kyn-btn-primary flex-grow-1 py-2 font-weight-bold" style="font-size: 12px;">
+                  Book Consultation
+                </button>
+              </div>
+            </article>
+          </div>
+        `).join('');
+      } catch (err) {
+        container.innerHTML = '<div class="col-12 py-4 text-center text-danger">Failed to fetch doctors.</div>';
+      }
+    }
+
+    async function openDoctorProfile(doctorId) {
+      try {
+        const res = await API.getDoctorById(doctorId);
+        const doc = res.doctor;
+        const modalEl = document.getElementById('profile-modal-content');
+
+        modalEl.innerHTML = `
+          <div class="modal-header p-4 bg-light border-bottom">
+            <div class="d-flex align-items-center gap-3">
+              <img src="${doc.image_url}" alt="${doc.name}" class="rounded-circle object-fit-cover border" style="width: 58px; height: 58px;" />
+              <div>
+                <h5 class="font-headline font-weight-bold text-dark mb-0">${doc.title}</h5>
+                <span class="text-teal font-weight-bold d-block text-uppercase" style="font-size: 11px;">${doc.specialization}</span>
+                <span class="text-muted" style="font-size: 11px;">${doc.hospital_affiliation} • ${doc.area}, Bengaluru</span>
+              </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-4" style="font-size: 0.85rem;">
+            <div class="row g-2 mb-3 text-center">
+              <div class="col-4 p-2 bg-light rounded-2 border">
+                <span class="text-muted d-block" style="font-size: 10px;">Rating</span>
+                <strong class="font-headline text-dark">★ ${doc.rating}</strong>
+              </div>
+              <div class="col-4 p-2 bg-light rounded-2 border">
+                <span class="text-muted d-block" style="font-size: 10px;">Experience</span>
+                <strong class="font-headline text-dark">${doc.experience_years} Years</strong>
+              </div>
+              <div class="col-4 p-2 bg-light rounded-2 border">
+                <span class="text-muted d-block" style="font-size: 10px;">Fee</span>
+                <strong class="font-headline text-teal">${UI.formatINR(doc.consultation_fee)}</strong>
+              </div>
+            </div>
+            <h6 class="font-headline font-weight-bold text-dark mb-1">Clinical Biography</h6>
+            <p class="text-muted mb-3 leading-relaxed">${doc.bio}</p>
+
+            <h6 class="font-headline font-weight-bold text-dark mb-1">Clinic Address in Bengaluru</h6>
+            <p class="text-muted mb-3">${doc.address}</p>
+
+            <h6 class="font-headline font-weight-bold text-dark mb-2">Verified Patient Reviews</h6>
+            <div class="d-flex flex-column gap-2 mb-3">
+              ${(res.reviews && res.reviews.length > 0) ? res.reviews.map(r => `
+                <div class="p-2.5 bg-light rounded-2 border" style="font-size: 11px;">
+                  <div class="d-flex justify-content-between mb-1">
+                    <span class="font-weight-bold text-dark">Verified Patient</span>
+                    <span class="text-warning">★ ${r.rating} / 5</span>
+                  </div>
+                  <p class="text-muted mb-0">${r.comment}</p>
+                </div>
+              `).join('') : '<div class="text-muted small">No written reviews published yet.</div>'}
+            </div>
+          </div>
+          <div class="modal-footer p-3 bg-light border-top d-flex justify-content-between">
+            <span class="font-headline font-weight-bold text-dark">${UI.formatINR(doc.consultation_fee)} / consultation</span>
+            <button onclick="bootstrap.Modal.getInstance(document.getElementById('doctorProfileModal')).hide(); openBookingModal('${doc.id}')" class="btn btn-sm kyn-btn-primary font-weight-bold">
+              Book Appointment
+            </button>
+          </div>
+        `;
+
+        const modal = new bootstrap.Modal(document.getElementById('doctorProfileModal'));
+        modal.show();
+      } catch (err) {
+        UI.showToast('Could not load doctor profile.', 'error');
+      }
+    }
+
+    function openBookingModalWithSlot(doctorId, slotTime) {
+      openBookingModal(doctorId, slotTime);
+    }
+
+    async function openBookingModal(doctorId, defaultSlot = '14:30') {
+      try {
+        const res = await API.getDoctorById(doctorId);
+        const doc = res.doctor;
+
+        document.getElementById('book-doc-id').value = doc.id;
+        document.getElementById('book-modal-doc-name').innerText = doc.name;
+        document.getElementById('book-modal-doc-spec').innerText = `${doc.specialization} • ${doc.area}, Bengaluru`;
+        document.getElementById('book-modal-doc-img').src = doc.image_url;
+        document.getElementById('book-fee-display').innerText = UI.formatINR(doc.consultation_fee);
+        document.getElementById('book-total-display').innerText = UI.formatINR(doc.consultation_fee);
+        if (defaultSlot) {
+          document.getElementById('book-time').value = defaultSlot;
+        }
+
+        // Set default date to today or tomorrow
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('book-date').value = tomorrow.toISOString().split('T')[0];
+        document.getElementById('book-date').min = new Date().toISOString().split('T')[0];
+
+        const modal = new bootstrap.Modal(document.getElementById('bookAppointmentModal'));
+        modal.show();
+      } catch (err) {
+        UI.showToast('Failed to load doctor booking info.', 'error');
+      }
+    }
+
+    // Handle Booking Form Submit with Proper Validation
+    document.getElementById('book-appointment-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const user = API.getUser();
+      if (!user) {
+        UI.showToast('Please login to book a consultation.', 'error');
+        setTimeout(() => window.location.href = '/login.html', 1000);
+        return;
+      }
+
+      const doctor_id = document.getElementById('book-doc-id').value;
+      const appointment_date = document.getElementById('book-date').value;
+      const appointment_time = document.getElementById('book-time').value;
+      const consultation_type = document.querySelector('input[name="consult-mode"]:checked').value;
+      const reason = document.getElementById('book-reason').value;
+
+      const submitBtn = document.getElementById('book-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Confirming Slot...';
+
+      try {
+        const res = await API.bookAppointment({
+          doctor_id,
+          appointment_date,
+          appointment_time,
+          consultation_type,
+          reason,
+        });
+
+        bootstrap.Modal.getInstance(document.getElementById('bookAppointmentModal')).hide();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Confirm & Secure Slot</span>';
+
+        // Show friendly booking receipt with Google Calendar sync
+        UI.showBookingSuccessModal({
+          code: res.appointment.code || 'APT-' + Math.floor(1000 + Math.random() * 9000),
+          doctor_name: res.appointment.doctor ? res.appointment.doctor.name : 'Verified Specialist',
+          doctor_image: res.appointment.doctor ? res.appointment.doctor.image_url : '',
+          specialization: res.appointment.doctor ? res.appointment.doctor.specialization : 'Specialist',
+          hospital: res.appointment.doctor ? res.appointment.doctor.hospital_affiliation : 'Bengaluru Clinic',
+          appointment_date,
+          appointment_time,
+          consultation_type,
+          consultation_fee: res.appointment.consultation_fee || 900,
+        });
+      } catch (err) {
+        UI.showToast(err.message || 'Booking validation failed.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Confirm & Secure Slot</span>';
+      }
+    });
+
+    // Specialty Pills Filter Trigger
+    document.getElementById('specialty-pills').addEventListener('click', e => {
+      if (e.target.classList.contains('kyn-pill-btn')) {
+        document.querySelectorAll('#specialty-pills .kyn-pill-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentSpecialty = e.target.getAttribute('data-spec');
+        loadDoctors();
+      }
+    });
+
+    // Live search & filters
+    let searchTimer = null;
+    document.getElementById('search-input').addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(loadDoctors, 250);
+    });
+    document.getElementById('area-select').addEventListener('change', loadDoctors);
+    document.getElementById('mode-select').addEventListener('change', loadDoctors);
+    document.getElementById('search-btn').addEventListener('click', loadDoctors);
+
+    // Check query params if book= or doctor= passed
+    document.addEventListener('DOMContentLoaded', () => {
+      loadDoctors();
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('book')) {
+        setTimeout(() => openBookingModal(params.get('book')), 600);
+      } else if (params.get('doctor')) {
+        setTimeout(() => openDoctorProfile(params.get('doctor')), 600);
+      }
+    });
+  </script>
+</body>
+</html>

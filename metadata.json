@@ -1,0 +1,6 @@
+{
+  "name": "Kynovia AI Clinical Intelligence",
+  "description": "Executive clinical decision support, EHR-synced doctor appointments, and AI-powered symptom triaging platform.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

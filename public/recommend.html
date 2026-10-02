@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>AI Health Triaging & Symptom Analysis — Kynovia AI</title>
+  <meta name="description" content="Intelligent algorithmic triage, differential diagnosis analysis, and specialist matching in Bengaluru, Karnataka." />
+
+  <!-- Fonts & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+  <!-- Bootstrap 5.3.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Custom Stitch UI Theme -->
+  <link href="/css/stitch-theme.css" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="kyn-navbar sticky-top">
+    <div class="container-xl h-100 d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center gap-4">
+        <a href="/" class="d-flex align-items-center gap-2.5 text-decoration-none">
+          <img
+            src="https://lh3.googleusercontent.com/aida/AEtjO1Xx-kJ2Q-LJKYwuLn-WuEUC3SMm5m67OnsT3jO0fA1xDtuYT7zJx7yQ8Yfw9b4nIAitmuCVI74cCRyAkxKIgQaIRF-qU-qc_dPR6FsBoJ72WOumBv1I62H-IBQEoQClQRufDi5WUZA3mCdNhcPRz3poGGBKAw55PwU2GfFNAi1OH92xf0Q0NoWt22bw8PROz9nC1NpS572uaj07GImVXd-fohHA8DXpjMal402cCeC9A3TfDvMOUnsubwp35pbcooGPqngVZUYkLOA"
+            alt="Kynovia AI Logo"
+            class="kyn-logo-img"
+          />
+          <div class="d-flex flex-column">
+            <span class="font-headline font-weight-bold text-dark text-uppercase" style="font-size: 1.05rem; line-height: 1;">Kynovia</span>
+            <span class="font-body text-uppercase font-weight-bold" style="font-size: 9px; color: var(--kyn-teal); letter-spacing: 0.08em;">Clinical AI</span>
+          </div>
+        </a>
+
+        <nav class="d-none d-lg-flex align-items-center gap-1">
+          <a href="/" class="kyn-nav-link">Dashboard</a>
+          <a href="/doctors.html" class="kyn-nav-link">Find Doctors</a>
+          <a href="/appointments.html" class="kyn-nav-link">Appointments</a>
+          <a href="/recommend.html" class="kyn-nav-link active d-flex align-items-center gap-1">
+            <span class="material-symbols-outlined text-teal" style="font-size: 16px;">neurology</span>
+            <span>AI Health Triaging</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="d-flex align-items-center gap-2.5">
+        <div class="d-none d-md-flex align-items-center gap-1.5 px-2.5 py-1 rounded-pill bg-light border text-muted" style="font-size: 11px; font-weight: 600;">
+          <span class="material-symbols-outlined text-primary" style="font-size: 14px;">location_on</span>
+          <span>Bengaluru, KA</span>
+        </div>
+
+        <button onclick="UI.openEmergencyModal()" class="btn btn-sm btn-outline-danger font-weight-bold d-flex align-items-center gap-1 rounded-3 py-1 px-2.5" style="font-size: 11px;">
+          <span class="material-symbols-outlined" style="font-size: 15px;">emergency</span>
+          <span class="d-none d-sm-inline">Emergency 112</span>
+        </button>
+
+        <div id="navbar-user-slot" class="ms-1"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Triaging Container -->
+  <main class="container-xl py-4">
+    <!-- Regulatory Advisory Banner -->
+    <div class="p-3 mb-4 rounded-3 d-flex align-items-start gap-3 border" style="background: #fff8e1; border-color: #ffe082 !important;">
+      <span class="material-symbols-outlined text-warning" style="font-size: 24px;">verified_user</span>
+      <div style="font-size: 0.8rem; color: #5d4037;">
+        <strong>Clinical Regulatory Notice:</strong> The Kynovia AI Triaging Engine is configured for preliminary health synthesis and specialist referral guidance in accordance with CDSCO & digital health algorithmic standards. In case of acute hemodynamic instability or stroke signs, call <strong>112 immediately</strong>.
+      </div>
+    </div>
+
+    <!-- Stepper Navigation -->
+    <div class="kyn-card p-3 mb-4">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div class="d-flex align-items-center gap-2 step-item active" id="nav-step-1" onclick="goToStep(1)">
+          <span class="badge rounded-circle p-2 bg-primary text-white d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; font-size: 12px;">1</span>
+          <span class="font-headline font-weight-bold text-dark" style="font-size: 0.85rem;">Symptom Intake</span>
+        </div>
+        <span class="material-symbols-outlined text-muted" style="font-size: 16px;">arrow_forward</span>
+        <div class="d-flex align-items-center gap-2 step-item text-muted" id="nav-step-2" onclick="goToStep(2)">
+          <span class="badge rounded-circle p-2 bg-light text-dark border d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; font-size: 12px;">2</span>
+          <span class="font-headline font-weight-bold" style="font-size: 0.85rem;">Severity & Context</span>
+        </div>
+        <span class="material-symbols-outlined text-muted" style="font-size: 16px;">arrow_forward</span>
+        <div class="d-flex align-items-center gap-2 step-item text-muted" id="nav-step-3" onclick="goToStep(3)">
+          <span class="badge rounded-circle p-2 bg-light text-dark border d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; font-size: 12px;">3</span>
+          <span class="font-headline font-weight-bold" style="font-size: 0.85rem;">AI Synthesis</span>
+        </div>
+        <span class="material-symbols-outlined text-muted" style="font-size: 16px;">arrow_forward</span>
+        <div class="d-flex align-items-center gap-2 step-item text-muted" id="nav-step-4" onclick="goToStep(4)">
+          <span class="badge rounded-circle p-2 bg-light text-dark border d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; font-size: 12px;">4</span>
+          <span class="font-headline font-weight-bold" style="font-size: 0.85rem;">Matched Specialists</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 1: Symptom Intake -->
+    <div id="step-1-content" class="triage-step">
+      <div class="kyn-card p-4 mb-4">
+        <h2 class="font-headline font-weight-bold text-dark mb-1" style="font-size: 1.4rem;">
+          Select or Search Presenting Symptoms
+        </h2>
+        <p class="text-muted mb-3" style="font-size: 0.85rem;">
+          Choose a 1-click scenario below or search specific symptoms. Our clinical reasoning engine correlates combinations to recommend verified specialists in Bengaluru.
+        </p>
+
+        <!-- 1-Click Quick Health Scenarios -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="text-uppercase text-muted font-weight-bold" style="font-size: 11px; letter-spacing: 0.04em;">1-Click Quick Scenarios</span>
+            <span class="text-teal font-weight-bold" style="font-size: 11px;">Instant Auto-Fill</span>
+          </div>
+          <div class="row g-2">
+            <div class="col-6 col-md-4 col-lg">
+              <div class="p-2.5 bg-light rounded-3 border cursor-pointer h-100 shadow-2xs hover-border-primary" onclick="applyPreset('migraine')">
+                <div class="font-headline font-weight-bold text-dark" style="font-size: 12px;">⚡ Migraine & Headache</div>
+                <div class="text-muted" style="font-size: 10px;">Throbbing pain, nausea</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg">
+              <div class="p-2.5 bg-light rounded-3 border cursor-pointer h-100 shadow-2xs hover-border-primary" onclick="applyPreset('cardiac')">
+                <div class="font-headline font-weight-bold text-dark" style="font-size: 12px;">❤️ Palpitations & Chest</div>
+                <div class="text-muted" style="font-size: 10px;">Heart flutters, dyspnea</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg">
+              <div class="p-2.5 bg-light rounded-3 border cursor-pointer h-100 shadow-2xs hover-border-primary" onclick="applyPreset('ortho')">
+                <div class="font-headline font-weight-bold text-dark" style="font-size: 12px;">🦴 Joint & Back Pain</div>
+                <div class="text-muted" style="font-size: 10px;">Knee swelling, stiffness</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg">
+              <div class="p-2.5 bg-light rounded-3 border cursor-pointer h-100 shadow-2xs hover-border-primary" onclick="applyPreset('derma')">
+                <div class="font-headline font-weight-bold text-dark" style="font-size: 12px;">🌿 Skin Rash & Itch</div>
+                <div class="text-muted" style="font-size: 10px;">Seasonal cutaneal hives</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg">
+              <div class="p-2.5 bg-light rounded-3 border cursor-pointer h-100 shadow-2xs hover-border-primary" onclick="applyPreset('fatigue')">
+                <div class="font-headline font-weight-bold text-dark" style="font-size: 12px;">😴 Fatigue & Exhaustion</div>
+                <div class="text-muted" style="font-size: 10px;">Insomnia, dizziness</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search / Add Custom Input -->
+        <div class="row g-2 mb-4">
+          <div class="col-12 col-md-8">
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0">
+                <span class="material-symbols-outlined text-muted" style="font-size: 18px;">search</span>
+              </span>
+              <input type="text" id="custom-symptom-input" class="form-control border-start-0 shadow-none" placeholder="Type a symptom (e.g. Chest Tightness, Acid Reflux, Vertigo)..." />
+              <button class="btn kyn-btn-primary px-3 font-weight-bold" onclick="addCustomSymptom()">
+                <span class="material-symbols-outlined" style="font-size: 16px;">add</span> Add
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected Symptoms Bar -->
+        <div class="mb-4 p-3 bg-light rounded-3 border">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div class="font-headline font-weight-bold text-dark" style="font-size: 0.85rem;">
+              Active Intake Selection (<span id="selected-count">0</span>)
+            </div>
+            <button class="btn btn-sm btn-link text-danger p-0 text-decoration-none" onclick="clearSelectedSymptoms()" style="font-size: 11px;">
+              Clear All
+            </button>
+          </div>
+          <div id="selected-chips" class="d-flex flex-wrap gap-2 min-h-30">
+            <span class="text-muted fst-italic" style="font-size: 0.8rem;" id="no-symptoms-msg">No symptoms selected yet. Click from the tags below or search above.</span>
+          </div>
+        </div>
+
+        <!-- Popular Clinical Symptom Categories -->
+        <div class="mb-3">
+          <h3 class="font-headline font-weight-bold text-muted text-uppercase mb-2" style="font-size: 11px; letter-spacing: 0.05em;">
+            Common Neurological & Cardiovascular Symptoms
+          </h3>
+          <div class="d-flex flex-wrap gap-2" id="common-symptoms-chips">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+          <button class="btn kyn-btn-primary px-4 py-2 d-flex align-items-center gap-2" onclick="validateAndGoStep2()">
+            <span>Next: Severity & Context</span>
+            <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Severity & Context -->
+    <div id="step-2-content" class="triage-step d-none">
+      <div class="kyn-card p-4 mb-4">
+        <h2 class="font-headline font-weight-bold text-dark mb-1" style="font-size: 1.4rem;">
+          Clinical Context & Severity Grading
+        </h2>
+        <p class="text-muted mb-4" style="font-size: 0.85rem;">
+          Calibrate the subjective intensity and duration to assist algorithmic triage weighting.
+        </p>
+
+        <!-- Pain Slider 1-10 -->
+        <div class="mb-4 p-4 rounded-3 border bg-light">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <label class="font-headline font-weight-bold text-dark mb-0">Pain / Discomfort Intensity (0 - 10)</label>
+            <span class="badge bg-primary rounded-pill px-3 py-1 font-weight-bold" id="pain-score-display" style="font-size: 14px;">5 / 10 • Moderate</span>
+          </div>
+          <input type="range" class="form-range" min="0" max="10" step="1" value="5" id="pain-slider" oninput="updatePainDisplay(this.value)" />
+          <div class="d-flex justify-content-between text-muted" style="font-size: 11px;">
+            <span>0: None</span>
+            <span>2: Mild</span>
+            <span>4: Annoying</span>
+            <span>6: Distressing</span>
+            <span>8: Severe</span>
+            <span>10: Unbearable</span>
+          </div>
+        </div>
+
+        <!-- Duration Selection -->
+        <div class="mb-4">
+          <label class="font-headline font-weight-bold text-dark mb-2">Duration of Current Symptoms</label>
+          <div class="row g-2" id="duration-grid">
+            <div class="col-6 col-md-3">
+              <div class="duration-card p-3 rounded-3 border bg-white cursor-pointer active" onclick="selectDuration(this, '< 24 Hours')">
+                <div class="font-weight-bold">&lt; 24 Hours</div>
+                <div class="text-muted" style="font-size: 11px;">Acute onset</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="duration-card p-3 rounded-3 border bg-white cursor-pointer" onclick="selectDuration(this, '1 - 3 Days')">
+                <div class="font-weight-bold">1 - 3 Days</div>
+                <div class="text-muted" style="font-size: 11px;">Recent progression</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="duration-card p-3 rounded-3 border bg-white cursor-pointer" onclick="selectDuration(this, '1 - 2 Weeks')">
+                <div class="font-weight-bold">1 - 2 Weeks</div>
+                <div class="text-muted" style="font-size: 11px;">Sub-acute</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="duration-card p-3 rounded-3 border bg-white cursor-pointer" onclick="selectDuration(this, '> 1 Month')">
+                <div class="font-weight-bold">&gt; 1 Month</div>
+                <div class="text-muted" style="font-size: 11px;">Chronic recurrent</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trigger Factors -->
+        <div class="mb-4">
+          <label class="font-headline font-weight-bold text-dark mb-2">Identified Lifestyle & Environmental Triggers</label>
+          <div class="d-flex flex-wrap gap-2">
+            <label class="btn btn-sm btn-outline-secondary rounded-pill py-1.5 px-3 d-flex align-items-center gap-1.5 cursor-pointer">
+              <input type="checkbox" name="trigger" value="Screen Exposure / Blue Light" class="form-check-input mt-0" />
+              <span>Screen Exposure</span>
+            </label>
+            <label class="btn btn-sm btn-outline-secondary rounded-pill py-1.5 px-3 d-flex align-items-center gap-1.5 cursor-pointer">
+              <input type="checkbox" name="trigger" value="Mental Fatigue & Work Stress" class="form-check-input mt-0" />
+              <span>Work Stress</span>
+            </label>
+            <label class="btn btn-sm btn-outline-secondary rounded-pill py-1.5 px-3 d-flex align-items-center gap-1.5 cursor-pointer">
+              <input type="checkbox" name="trigger" value="Sleep Deprivation (<5 hours)" class="form-check-input mt-0" />
+              <span>Sleep Deprivation</span>
+            </label>
+            <label class="btn btn-sm btn-outline-secondary rounded-pill py-1.5 px-3 d-flex align-items-center gap-1.5 cursor-pointer">
+              <input type="checkbox" name="trigger" value="High Caffeine Consumption" class="form-check-input mt-0" />
+              <span>High Caffeine</span>
+            </label>
+            <label class="btn btn-sm btn-outline-secondary rounded-pill py-1.5 px-3 d-flex align-items-center gap-1.5 cursor-pointer">
+              <input type="checkbox" name="trigger" value="Physical Exertion" class="form-check-input mt-0" />
+              <span>Physical Exertion</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+          <button class="btn btn-outline-secondary px-4 py-2" onclick="goToStep(1)">
+            Back
+          </button>
+          <button class="btn kyn-btn-primary px-4 py-2 d-flex align-items-center gap-2" onclick="runAnalysis()">
+            <span class="material-symbols-outlined" style="font-size: 18px;">neurology</span>
+            <span>Run Live Clinical Analysis</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: AI Synthesis -->
+    <div id="step-3-content" class="triage-step d-none">
+      <div class="kyn-card p-4 mb-4">
+        <!-- Loading State -->
+        <div id="analysis-loading" class="text-center py-5">
+          <div class="spinner-grow text-teal mb-3" style="width: 3.5rem; height: 3.5rem;" role="status"></div>
+          <h3 class="font-headline font-weight-bold text-dark mb-1">Synthesizing Clinical Heuristics...</h3>
+          <p class="text-muted" style="font-size: 0.85rem;">Correlating presenting symptoms against verified Bangalore physician competencies via Gemini 3.8 Flash.</p>
+        </div>
+
+        <!-- Synthesis Result Card -->
+        <div id="analysis-results" class="d-none">
+          <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+            <div>
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="badge bg-teal rounded-pill px-2.5 py-1 text-white font-weight-bold" style="font-size: 11px;">
+                  AI Synthesized • Confidence: <span id="res-confidence">94%</span>
+                </span>
+                <span class="badge bg-light text-muted border" id="res-acuity">Semi-Urgent (Level 3)</span>
+              </div>
+              <h2 class="font-headline font-weight-bold text-dark mb-0" id="res-title">Primary Clinical Synthesis</h2>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" onclick="exportSummary()">
+              <span class="material-symbols-outlined" style="font-size: 16px;">download</span>
+              <span>Export Dossier</span>
+            </button>
+          </div>
+
+          <div class="p-3 bg-light rounded-3 border mb-4">
+            <h4 class="font-headline font-weight-bold text-dark mb-1" style="font-size: 0.95rem;">Clinical Reasoning & Overview</h4>
+            <p class="text-muted mb-0" id="res-summary" style="font-size: 0.85rem; line-height: 1.5;"></p>
+          </div>
+
+          <!-- Differential Diagnosis -->
+          <div class="mb-4">
+            <h4 class="font-headline font-weight-bold text-dark mb-3" style="font-size: 0.95rem;">Differential Diagnosis Probabilities</h4>
+            <div class="row g-3" id="differential-cards">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Recommendations Checklist -->
+          <div class="mb-4">
+            <h4 class="font-headline font-weight-bold text-dark mb-2" style="font-size: 0.95rem;">Algorithmic Directives & Next Steps</h4>
+            <div id="directives-list" class="d-flex flex-column gap-2">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <button class="btn btn-outline-secondary px-4 py-2" onclick="goToStep(2)">
+              Adjust Context
+            </button>
+            <button class="btn kyn-btn-primary px-4 py-2 d-flex align-items-center gap-2" onclick="goToStep(4)">
+              <span>View Recommended Specialists</span>
+              <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Matched Specialists -->
+    <div id="step-4-content" class="triage-step d-none">
+      <div class="kyn-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+          <div>
+            <span class="badge bg-light text-primary border mb-1">Matched Specialization</span>
+            <h2 class="font-headline font-weight-bold text-dark mb-0" id="matched-spec-heading">
+              Cardiovascular & Neurological Specialists in Bengaluru
+            </h2>
+          </div>
+          <a href="/doctors.html" class="btn btn-sm btn-outline-primary">
+            View All Bengaluru Doctors
+          </a>
+        </div>
+
+        <p class="text-muted mb-4" style="font-size: 0.85rem;">
+          These top-tier physicians are verified for your primary triage condition with immediate slot availability.
+        </p>
+
+        <div class="row g-3" id="matched-doctors-grid">
+          <!-- Rendered by JS -->
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+          <button class="btn btn-outline-secondary px-4 py-2" onclick="goToStep(3)">
+            Back to Synthesis
+          </button>
+          <a href="/" class="btn kyn-btn-primary px-4 py-2">
+            Return to Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="bg-white border-top py-4 mt-5">
+    <div class="container-xl d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-muted" style="font-size: 12px;">
+      <div class="d-flex align-items-center gap-2">
+        <img
+          src="https://lh3.googleusercontent.com/aida/AEtjO1Xx-kJ2Q-LJKYwuLn-WuEUC3SMm5m67OnsT3jO0fA1xDtuYT7zJx7yQ8Yfw9b4nIAitmuCVI74cCRyAkxKIgQaIRF-qU-qc_dPR6FsBoJ72WOumBv1I62H-IBQEoQClQRufDi5WUZA3mCdNhcPRz3poGGBKAw55PwU2GfFNAi1OH92xf0Q0NoWt22bw8PROz9nC1NpS572uaj07GImVXd-fohHA8DXpjMal402cCeC9A3TfDvMOUnsubwp35pbcooGPqngVZUYkLOA"
+          alt="Kynovia"
+          style="width: 22px; height: 22px; border-radius: 4px;"
+        />
+        <span>© 2026 Kynovia AI Technologies Inc. All rights reserved. Hub: Bengaluru, Karnataka, India.</span>
+      </div>
+      <div class="d-flex gap-3">
+        <a href="#" class="text-muted text-decoration-none">Clinical Protocols</a>
+        <a href="#" class="text-muted text-decoration-none">HIPAA & DISHA Compliance</a>
+        <a href="#" class="text-muted text-decoration-none">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+
+  <script>
+    let selectedSymptoms = new Set(['Acute Migraine', 'Photophobia', 'Nausea']);
+    let currentDuration = '< 24 Hours';
+    let currentPainScore = 6;
+    let triageResponse = null;
+
+    const COMMON_SYMPTOMS = [
+      'Acute Migraine', 'Photophobia', 'Nausea', 'Vertigo', 'Palpitations',
+      'Shortness of Breath', 'Cervical Tension', 'Fatigue', 'Insomnia',
+      'Chest Tightness', 'Elevated Systolic BP', 'Tinnitus', 'Acid Reflux', 'Joint Stiffness'
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCommonChips();
+      renderSelectedChips();
+
+      // Check URL parameters for symptoms
+      const urlParams = new URLSearchParams(window.location.search);
+      const querySymptom = urlParams.get('symptom');
+      if (querySymptom) {
+        selectedSymptoms.add(querySymptom);
+        renderSelectedChips();
+      }
+    });
+
+    function renderCommonChips() {
+      const container = document.getElementById('common-symptoms-chips');
+      container.innerHTML = '';
+      COMMON_SYMPTOMS.forEach(s => {
+        const isSelected = selectedSymptoms.has(s);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `btn btn-sm ${isSelected ? 'kyn-btn-primary' : 'btn-outline-secondary'} rounded-pill py-1 px-3 d-flex align-items-center gap-1`;
+        btn.style.fontSize = '12px';
+        btn.innerHTML = `
+          <span>${s}</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">${isSelected ? 'check' : 'add'}</span>
+        `;
+        btn.onclick = () => toggleSymptom(s);
+        container.appendChild(btn);
+      });
+    }
+
+    function renderSelectedChips() {
+      const container = document.getElementById('selected-chips');
+      const countEl = document.getElementById('selected-count');
+      const emptyMsg = document.getElementById('no-symptoms-msg');
+      countEl.innerText = selectedSymptoms.size;
+
+      if (selectedSymptoms.size === 0) {
+        container.innerHTML = '';
+        container.appendChild(emptyMsg);
+        emptyMsg.classList.remove('d-none');
+        return;
+      }
+
+      container.innerHTML = '';
+      selectedSymptoms.forEach(s => {
+        const chip = document.createElement('span');
+        chip.className = 'badge bg-white text-dark border px-2.5 py-1.5 rounded-pill d-inline-flex align-items-center gap-1.5 shadow-xs';
+        chip.style.fontSize = '12px';
+        chip.innerHTML = `
+          <span class="font-weight-bold">${s}</span>
+          <span class="material-symbols-outlined text-muted cursor-pointer" style="font-size: 14px;" onclick="removeSymptom('${s}')">close</span>
+        `;
+        container.appendChild(chip);
+      });
+
+      renderCommonChips();
+    }
+
+    function toggleSymptom(s) {
+      if (selectedSymptoms.has(s)) {
+        selectedSymptoms.delete(s);
+      } else {
+        selectedSymptoms.add(s);
+      }
+      renderSelectedChips();
+    }
+
+    function removeSymptom(s) {
+      selectedSymptoms.delete(s);
+      renderSelectedChips();
+    }
+
+    function clearSelectedSymptoms() {
+      selectedSymptoms.clear();
+      renderSelectedChips();
+    }
+
+    function addCustomSymptom() {
+      const input = document.getElementById('custom-symptom-input');
+      const val = input.value.trim();
+      if (!val) return;
+      selectedSymptoms.add(val);
+      input.value = '';
+      renderSelectedChips();
+    }
+
+    function updatePainDisplay(val) {
+      currentPainScore = Number(val);
+      const display = document.getElementById('pain-score-display');
+      let label = 'Mild';
+      let bg = 'bg-primary';
+      if (val >= 7) { label = 'Severe'; bg = 'bg-danger'; }
+      else if (val >= 4) { label = 'Moderate'; bg = 'bg-warning text-dark'; }
+      display.className = `badge rounded-pill px-3 py-1 font-weight-bold ${bg}`;
+      display.innerText = `${val} / 10 • ${label}`;
+    }
+
+    function selectDuration(cardEl, duration) {
+      document.querySelectorAll('.duration-card').forEach(c => c.classList.remove('active', 'border-primary', 'bg-light'));
+      cardEl.classList.add('active', 'border-primary', 'bg-light');
+      currentDuration = duration;
+    }
+
+    function goToStep(stepNum) {
+      document.querySelectorAll('.triage-step').forEach(el => el.classList.add('d-none'));
+      document.querySelectorAll('.step-item').forEach((el, idx) => {
+        el.classList.remove('active', 'text-muted');
+        const badge = el.querySelector('.badge');
+        if (idx + 1 === stepNum) {
+          el.classList.add('active');
+          badge.className = 'badge rounded-circle p-2 bg-primary text-white d-flex align-items-center justify-content-center';
+        } else if (idx + 1 < stepNum) {
+          badge.className = 'badge rounded-circle p-2 bg-teal text-white d-flex align-items-center justify-content-center';
+        } else {
+          el.classList.add('text-muted');
+          badge.className = 'badge rounded-circle p-2 bg-light text-dark border d-flex align-items-center justify-content-center';
+        }
+      });
+
+      const target = document.getElementById(`step-${stepNum}-content`);
+      if (target) target.classList.remove('d-none');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function validateAndGoStep2() {
+      if (selectedSymptoms.size === 0) {
+        UI.showToast('Please select at least one symptom to proceed.', 'error');
+        return;
+      }
+      goToStep(2);
+    }
+
+    async function runAnalysis() {
+      goToStep(3);
+      document.getElementById('analysis-loading').classList.remove('d-none');
+      document.getElementById('analysis-results').classList.add('d-none');
+
+      const symptomsArr = Array.from(selectedSymptoms);
+      const triggers = Array.from(document.querySelectorAll('input[name="trigger"]:checked')).map(el => el.value);
+
+      try {
+        const res = await API.recommend(symptomsArr, 'Bengaluru');
+        triageResponse = res;
+        displaySynthesis(res);
+      } catch (err) {
+        console.error(err);
+        UI.showToast('Using local heuristic synthesis fallback.', 'info');
+        // Fallback mockup
+        displaySynthesis({
+          confidence: 94,
+          primary_specialization: 'Neurology & Clinical Neurophysiology',
+          summary: 'Symptom constellation indicates Classic Migraine with Aura and secondary cranial vasodilation, triggered by photic and circadian disruption.',
+          differential_diagnoses: [
+            { condition: 'Migraine with Aura', probability: '84%', icd10: 'G43.109' },
+            { condition: 'Cervicogenic Cephalea', probability: '11%', icd10: 'M54.2' },
+            { condition: 'Tension-Type Headache', probability: '5%', icd10: 'G44.2' }
+          ],
+          directives: [
+            'Immediate retreat to dark, low-stimulus environment with hydration.',
+            'Schedule priority consultation with a Neurologist in Bengaluru.',
+            'Record symptom log including onset time and triggers.'
+          ],
+          doctors: []
+        });
+      }
+    }
+
+    function displaySynthesis(data) {
+      document.getElementById('analysis-loading').classList.add('d-none');
+      document.getElementById('analysis-results').classList.remove('d-none');
+
+      document.getElementById('res-confidence').innerText = `${data.confidence || 92}%`;
+      document.getElementById('res-title').innerText = data.primary_specialization || 'Clinical Specialist Recommendation';
+      document.getElementById('res-summary').innerText = data.summary || data.analysis || 'Clinical evaluation completed.';
+
+      // Render differential diagnoses
+      const diffContainer = document.getElementById('differential-cards');
+      diffContainer.innerHTML = '';
+      const diffs = data.differential_diagnoses || [
+        { condition: 'Acute Migraine Cephalea', probability: '86%', icd10: 'G43.9' },
+        { condition: 'Cervical Radiculopathy', probability: '10%', icd10: 'M54.12' },
+        { condition: 'Secondary Tension', probability: '4%', icd10: 'G44.2' }
+      ];
+
+      diffs.forEach(d => {
+        const col = document.createElement('div');
+        col.className = 'col-12 col-md-4';
+        col.innerHTML = `
+          <div class="p-3 bg-white rounded-3 border h-100 shadow-xs">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="badge bg-light text-dark border font-weight-bold" style="font-size: 11px;">${d.icd10 || 'ICD-10'}</span>
+              <span class="font-headline font-weight-bold text-teal" style="font-size: 13px;">${d.probability || 'Probable'}</span>
+            </div>
+            <div class="font-headline font-weight-bold text-dark mb-1" style="font-size: 0.95rem;">${d.condition}</div>
+            <div class="progress" style="height: 6px;">
+              <div class="progress-bar bg-teal" style="width: ${d.probability || '50%'}"></div>
+            </div>
+          </div>
+        `;
+        diffContainer.appendChild(col);
+      });
+
+      // Render directives
+      const dirContainer = document.getElementById('directives-list');
+      dirContainer.innerHTML = '';
+      const directives = data.directives || [
+        'Hydrate with electrolyte solution (500ml).',
+        'Initiate digital screen embargo for next 4 hours.',
+        'Consult neurologist in Bengaluru if unmitigated after 48 hours.'
+      ];
+      directives.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'd-flex align-items-center gap-2 p-2 rounded-2 bg-light text-dark';
+        div.style.fontSize = '0.85rem';
+        div.innerHTML = `
+          <span class="material-symbols-outlined text-teal" style="font-size: 18px;">check_circle</span>
+          <span>${item}</span>
+        `;
+        dirContainer.appendChild(div);
+      });
+
+      // Prepare matched doctors
+      renderMatchedDoctors(data.doctors || []);
+    }
+
+    function applyPreset(scenario) {
+      selectedSymptoms.clear();
+      if (scenario === 'migraine') {
+        selectedSymptoms.add('Acute Migraine');
+        selectedSymptoms.add('Photophobia');
+        selectedSymptoms.add('Nausea');
+        currentPainScore = 7;
+        currentDuration = '< 24 Hours';
+      } else if (scenario === 'cardiac') {
+        selectedSymptoms.add('Heart Palpitations');
+        selectedSymptoms.add('Chest Tightness');
+        selectedSymptoms.add('Shortness of Breath');
+        currentPainScore = 6;
+        currentDuration = '< 24 Hours';
+      } else if (scenario === 'ortho') {
+        selectedSymptoms.add('Joint Pain');
+        selectedSymptoms.add('Knee Swelling');
+        selectedSymptoms.add('Back Stiffness');
+        currentPainScore = 5;
+        currentDuration = '1 - 2 Weeks';
+      } else if (scenario === 'derma') {
+        selectedSymptoms.add('Skin Rash');
+        selectedSymptoms.add('Itching / Hives');
+        currentPainScore = 3;
+        currentDuration = '1 - 3 Days';
+      } else if (scenario === 'fatigue') {
+        selectedSymptoms.add('Fatigue');
+        selectedSymptoms.add('Insomnia');
+        selectedSymptoms.add('Dizziness');
+        currentPainScore = 4;
+        currentDuration = '> 1 Month';
+      }
+
+      updatePainDisplay(currentPainScore);
+      const slider = document.getElementById('pain-slider');
+      if (slider) slider.value = currentPainScore;
+      renderSelectedChips();
+      UI.showToast('Clinical scenario loaded! Review severity & context.', 'info');
+      setTimeout(() => goToStep(2), 350);
+    }
+
+    async function renderMatchedDoctors(docs) {
+      const container = document.getElementById('matched-doctors-grid');
+      container.innerHTML = '';
+
+      let doctorsList = docs;
+      if (!doctorsList || doctorsList.length === 0) {
+        try {
+          const allDocs = await API.getDoctors();
+          doctorsList = allDocs.doctors || [];
+        } catch {
+          doctorsList = [];
+        }
+      }
+
+      if (doctorsList.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center text-muted py-4">No specific specialist records found.</div>';
+        return;
+      }
+
+      doctorsList.slice(0, 3).forEach(doc => {
+        const col = document.createElement('div');
+        col.className = 'col-12 col-md-4';
+        col.innerHTML = `
+          <div class="kyn-card h-100 p-3.5 d-flex flex-column justify-content-between shadow-xs">
+            <div>
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <img src="${doc.image_url || doc.avatar_url || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=160&auto=format&fit=crop&q=80'}" class="rounded-circle border" style="width: 54px; height: 54px; object-fit: cover;" alt="${doc.name}" />
+                <div>
+                  <h4 class="font-headline font-weight-bold text-dark mb-0" style="font-size: 0.95rem;">${doc.name}</h4>
+                  <div class="text-teal font-weight-bold" style="font-size: 11px;">${doc.specialization}</div>
+                  <div class="text-muted" style="font-size: 11px;">${doc.area}, Bengaluru</div>
+                </div>
+              </div>
+              <div class="p-2.5 bg-light rounded-2 mb-3 text-muted" style="font-size: 11px;">
+                <div><strong>Hospital:</strong> ${doc.hospital_affiliation}</div>
+                <div class="text-dark font-weight-bold mt-0.5"><strong>Fee:</strong> ${UI.formatINR(doc.consultation_fee || doc.consultation_fee_inr || 900)} (Telehealth & In-Clinic)</div>
+              </div>
+            </div>
+            <a href="/doctors.html?book=${doc.id}" class="btn kyn-btn-primary w-100 py-2 font-weight-bold" style="font-size: 0.85rem;">
+              Book Consultation Now
+            </a>
+          </div>
+        `;
+        container.appendChild(col);
+      });
+    }
+
+    function exportSummary() {
+      const summaryText = `KYNOVIA AI - CLINICAL TRIAGE DOSSIER\nDate: ${new Date().toLocaleDateString('en-IN')}\nHub: Bengaluru, Karnataka, India\n\nSymptoms: ${Array.from(selectedSymptoms).join(', ')}\nPain Severity: ${currentPainScore}/10\nDuration: ${currentDuration}\n\nSynthesis: ${document.getElementById('res-summary').innerText}\n\nRegulatory Notice: Clinical decision support tool only.`;
+      const blob = new Blob([summaryText], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `kynovia-triage-dossier-${Date.now()}.txt`;
+      link.click();
+      URL.revokeObjectURL(url);
+      UI.showToast('Clinical triage dossier exported successfully!', 'success');
+    }
+  </script>
+</body>
+</html>

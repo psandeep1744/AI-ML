@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Admin & Clinical Governance Console — Kynovia AI</title>
+  <meta name="description" content="Kynovia AI platform management, doctor credentialing, and clinical telemetry analytics in Bengaluru, India." />
+
+  <!-- Fonts & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+  <!-- Bootstrap 5.3.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Custom Stitch UI Theme -->
+  <link href="/css/stitch-theme.css" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="kyn-navbar sticky-top">
+    <div class="container-xl h-100 d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center gap-4">
+        <a href="/" class="d-flex align-items-center gap-2.5 text-decoration-none">
+          <img
+            src="https://lh3.googleusercontent.com/aida/AEtjO1Xx-kJ2Q-LJKYwuLn-WuEUC3SMm5m67OnsT3jO0fA1xDtuYT7zJx7yQ8Yfw9b4nIAitmuCVI74cCRyAkxKIgQaIRF-qU-qc_dPR6FsBoJ72WOumBv1I62H-IBQEoQClQRufDi5WUZA3mCdNhcPRz3poGGBKAw55PwU2GfFNAi1OH92xf0Q0NoWt22bw8PROz9nC1NpS572uaj07GImVXd-fohHA8DXpjMal402cCeC9A3TfDvMOUnsubwp35pbcooGPqngVZUYkLOA"
+            alt="Kynovia AI Logo"
+            class="kyn-logo-img"
+          />
+          <div class="d-flex flex-column">
+            <span class="font-headline font-weight-bold text-dark text-uppercase" style="font-size: 1.05rem; line-height: 1;">Kynovia</span>
+            <span class="font-body text-uppercase font-weight-bold" style="font-size: 9px; color: #ba1a1a; letter-spacing: 0.08em;">Admin Console</span>
+          </div>
+        </a>
+
+        <nav class="d-none d-lg-flex align-items-center gap-1">
+          <a href="/admin-dashboard.html" class="kyn-nav-link active">Governance Overview</a>
+          <a href="/doctors.html" class="kyn-nav-link">Directory</a>
+          <a href="/recommend.html" class="kyn-nav-link">Triage Testing</a>
+        </nav>
+      </div>
+
+      <div class="d-flex align-items-center gap-2.5">
+        <span class="badge bg-danger rounded-pill px-2.5 py-1 font-weight-bold text-white" style="font-size: 10px;">
+          SUPER ADMIN ACCESS
+        </span>
+        <div id="navbar-user-slot" class="ms-1"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Admin Main Container -->
+  <main class="container-xl py-4">
+    <!-- Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+      <div>
+        <div class="text-muted font-weight-bold mb-1" style="font-size: 11px;">
+          SYSTEM HEALTH: 100% OPERATIONAL • CLUSTER: BENGALURU-AP-SOUTH-1
+        </div>
+        <h1 class="font-headline font-weight-bold text-dark mb-0" style="font-size: 1.8rem;">
+          Clinical Governance & Telemetry Hub
+        </h1>
+      </div>
+
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" onclick="exportAuditLog()">
+          <span class="material-symbols-outlined" style="font-size: 16px;">download</span>
+          <span>Download Audit Log</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Metric Row -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="kyn-card p-3 shadow-xs">
+          <div class="text-muted font-weight-bold text-uppercase" style="font-size: 10px;">Verified Physicians</div>
+          <div class="font-headline font-weight-bold text-dark my-1" style="font-size: 1.6rem;" id="adm-docs-count">6</div>
+          <div class="text-teal font-weight-bold" style="font-size: 11px;">100% KMC Verified</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kyn-card p-3 shadow-xs">
+          <div class="text-muted font-weight-bold text-uppercase" style="font-size: 10px;">Enrolled Patients</div>
+          <div class="font-headline font-weight-bold text-dark my-1" style="font-size: 1.6rem;">1,420</div>
+          <div class="text-muted" style="font-size: 11px;">Bengaluru Urban & Rural</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kyn-card p-3 shadow-xs">
+          <div class="text-muted font-weight-bold text-uppercase" style="font-size: 10px;">Platform Gross GMV</div>
+          <div class="font-headline font-weight-bold text-dark my-1" style="font-size: 1.6rem;">₹14.8L</div>
+          <div class="text-muted" style="font-size: 11px;">Zero-escrow payout</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kyn-card p-3 shadow-xs">
+          <div class="text-muted font-weight-bold text-uppercase" style="font-size: 10px;">AI Triage Latency</div>
+          <div class="font-headline font-weight-bold text-teal my-1" style="font-size: 1.6rem;">380ms</div>
+          <div class="text-muted" style="font-size: 11px;">Gemini 3.8 Flash Engine</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Governance Tables -->
+    <div class="row g-4">
+      <!-- Doctor Verification Queue -->
+      <div class="col-12 col-lg-8">
+        <div class="kyn-card p-4 shadow-xs mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="font-headline font-weight-bold text-dark mb-0" style="font-size: 1.15rem;">Physician Credential Verification Queue</h3>
+            <span class="badge bg-warning text-dark font-weight-bold">1 Pending Approval</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
+              <thead class="table-light">
+                <tr>
+                  <th>Physician</th>
+                  <th>Specialty</th>
+                  <th>Medical Council Reg.</th>
+                  <th>Area</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="font-weight-bold">Dr. Rajeshwar Sharma</div>
+                    <div class="text-muted" style="font-size: 11px;">rajeshwar.sharma@kynovia.ai</div>
+                  </td>
+                  <td>Cardiology</td>
+                  <td><span class="badge bg-light text-dark border">KMC-66291</span></td>
+                  <td>Indiranagar</td>
+                  <td><span class="badge bg-success">Verified</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="font-weight-bold">Dr. Priya V. Nambiar</div>
+                    <div class="text-muted" style="font-size: 11px;">priya.nambiar@kynovia.ai</div>
+                  </td>
+                  <td>Neurology</td>
+                  <td><span class="badge bg-light text-dark border">KMC-54128</span></td>
+                  <td>Hebbal</td>
+                  <td><span class="badge bg-success">Verified</span></td>
+                </tr>
+                <tr class="table-warning">
+                  <td>
+                    <div class="font-weight-bold">Dr. Rakesh Nair</div>
+                    <div class="text-muted" style="font-size: 11px;">rakesh.nair@kynovia.ai</div>
+                  </td>
+                  <td>Orthopedics</td>
+                  <td><span class="badge bg-light text-dark border">KMC-99412</span></td>
+                  <td>Whitefield</td>
+                  <td>
+                    <button class="btn btn-sm btn-success py-0.5 px-2" onclick="approveDoc(this)">Approve</button>
+                    <button class="btn btn-sm btn-outline-danger py-0.5 px-2">Reject</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Health & Gemini Telemetry -->
+      <div class="col-12 col-lg-4">
+        <div class="kyn-card p-4 shadow-xs mb-4">
+          <h3 class="font-headline font-weight-bold text-dark mb-3" style="font-size: 1.05rem;">Engine Status</h3>
+          <div class="d-flex flex-column gap-2 text-muted" style="font-size: 12px;">
+            <div class="d-flex justify-content-between p-2 rounded-2 bg-light">
+              <span>Gemini 3.8 Flash SDK</span>
+              <span class="text-success font-weight-bold">Connected</span>
+            </div>
+            <div class="d-flex justify-content-between p-2 rounded-2 bg-light">
+              <span>Express Microservices</span>
+              <span class="text-success font-weight-bold">Port 3000 Ready</span>
+            </div>
+            <div class="d-flex justify-content-between p-2 rounded-2 bg-light">
+              <span>EHR JSON Datastore</span>
+              <span class="text-success font-weight-bold">Synchronized</span>
+            </div>
+            <div class="d-flex justify-content-between p-2 rounded-2 bg-light">
+              <span>National 112 Dispatch Hook</span>
+              <span class="text-success font-weight-bold">Active</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+
+  <script>
+    function approveDoc(btn) {
+      btn.parentElement.innerHTML = '<span class="badge bg-success">Verified</span>';
+      UI.showToast('Physician approved and published to Bengaluru directory.', 'success');
+    }
+
+    function exportAuditLog() {
+      const data = `KYNOVIA AI - ADMINISTRATIVE AUDIT TRAIL\nHub: Bengaluru, Karnataka, India\nTimestamp: ${new Date().toISOString()}\nStatus: All endpoints active.`;
+      const blob = new Blob([data], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `kynovia-audit-log-${Date.now()}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+      UI.showToast('Audit trail exported successfully.', 'success');
+    }
+  </script>
+</body>
+</html>

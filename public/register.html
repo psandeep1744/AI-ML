@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Register — Kynovia AI Clinical Intelligence</title>
+  <meta name="description" content="Create an account on Kynovia AI as a patient or verified medical provider in Bengaluru, India." />
+
+  <!-- Fonts & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+  <!-- Bootstrap 5.3.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Custom Stitch UI Theme -->
+  <link href="/css/stitch-theme.css" rel="stylesheet" />
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+  <!-- Header -->
+  <header class="py-3 bg-white border-bottom">
+    <div class="container-xl d-flex align-items-center justify-content-between">
+      <a href="/" class="d-flex align-items-center gap-2.5 text-decoration-none">
+        <img
+          src="https://lh3.googleusercontent.com/aida/AEtjO1Xx-kJ2Q-LJKYwuLn-WuEUC3SMm5m67OnsT3jO0fA1xDtuYT7zJx7yQ8Yfw9b4nIAitmuCVI74cCRyAkxKIgQaIRF-qU-qc_dPR6FsBoJ72WOumBv1I62H-IBQEoQClQRufDi5WUZA3mCdNhcPRz3poGGBKAw55PwU2GfFNAi1OH92xf0Q0NoWt22bw8PROz9nC1NpS572uaj07GImVXd-fohHA8DXpjMal402cCeC9A3TfDvMOUnsubwp35pbcooGPqngVZUYkLOA"
+          alt="Kynovia AI"
+          class="kyn-logo-img"
+        />
+        <div class="d-flex flex-column">
+          <span class="font-headline font-weight-bold text-dark text-uppercase" style="font-size: 1.05rem; line-height: 1;">Kynovia</span>
+          <span class="font-body text-uppercase font-weight-bold" style="font-size: 9px; color: var(--kyn-teal); letter-spacing: 0.08em;">Clinical Intelligence</span>
+        </div>
+      </a>
+
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-muted d-none d-sm-inline" style="font-size: 0.8rem;">Already registered?</span>
+        <a href="/login.html" class="btn btn-sm kyn-btn-outline py-1 px-3">Sign In</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Register Main Form -->
+  <main class="container py-5 flex-grow-1 d-flex align-items-center justify-content-center">
+    <div class="w-100" style="max-width: 540px;">
+      <div class="kyn-card p-4 p-md-5 shadow-sm">
+        <div class="text-center mb-4">
+          <h1 class="font-headline font-weight-bold text-dark mb-1" style="font-size: 1.5rem;">Create Your Account</h1>
+          <p class="text-muted" style="font-size: 0.85rem;">Join Kynovia's connected clinical ecosystem in Bengaluru</p>
+        </div>
+
+        <!-- Role Select Tabs -->
+        <ul class="nav nav-pills nav-fill mb-4 p-1 bg-light rounded-pill border" id="roleTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active rounded-pill font-weight-bold py-1.5" id="patient-role-tab" data-bs-toggle="pill" data-bs-target="#patient-form-pane" type="button" style="font-size: 12px;">
+              Patient Account
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link rounded-pill font-weight-bold py-1.5" id="doctor-role-tab" data-bs-toggle="pill" data-bs-target="#doctor-form-pane" type="button" style="font-size: 12px;">
+              Doctor / Specialist Workstation
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <!-- PATIENT REGISTRATION FORM -->
+          <div class="tab-pane fade show active" id="patient-form-pane" role="tabpanel">
+            <form id="patient-register-form">
+              <div class="mb-3">
+                <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Full Name</label>
+                <input type="text" id="pat-name" class="form-control" placeholder="e.g. Rahul Sharma" required />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Email Address</label>
+                <input type="email" id="pat-email" class="form-control" placeholder="name@kynovia.health" required />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Indian Mobile Number (+91)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white border-end-0 font-weight-bold text-muted" style="font-size: 12px;">+91</span>
+                  <input type="tel" id="pat-mobile" class="form-control border-start-0" placeholder="98765 43210" maxlength="10" required />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Password</label>
+                <input type="password" id="pat-pass" class="form-control" placeholder="Minimum 8 characters" required />
+              </div>
+
+              <button type="submit" id="pat-submit-btn" class="btn kyn-btn-primary w-100 py-2 font-weight-bold mt-2">
+                Register as Patient
+              </button>
+            </form>
+          </div>
+
+          <!-- DOCTOR REGISTRATION FORM -->
+          <div class="tab-pane fade" id="doctor-form-pane" role="tabpanel">
+            <form id="doctor-register-form">
+              <div class="row g-2 mb-3">
+                <div class="col-12 col-md-6">
+                  <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Doctor Full Name</label>
+                  <input type="text" id="doc-name" class="form-control" placeholder="Dr. Ananya Rao" required />
+                </div>
+                <div class="col-12 col-md-6">
+                  <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Specialization</label>
+                  <select id="doc-specialty" class="form-select" required>
+                    <option value="Cardiovascular Medicine">Cardiovascular Medicine</option>
+                    <option value="Neurology & Stroke Care">Neurology & Stroke Care</option>
+                    <option value="Orthopedic Surgery & Sports Med">Orthopedic Surgery</option>
+                    <option value="Endocrinology & Diabetology">Endocrinology</option>
+                    <option value="Internal Medicine">Internal Medicine</option>
+                    <option value="Pulmonology & Sleep Medicine">Pulmonology</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row g-2 mb-3">
+                <div class="col-12 col-md-6">
+                  <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Medical Reg No. (KMC / NMC)</label>
+                  <input type="text" id="doc-reg" class="form-control" placeholder="KMC-84920" required />
+                </div>
+                <div class="col-12 col-md-6">
+                  <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Experience (Years)</label>
+                  <input type="number" id="doc-exp" class="form-control" placeholder="10" min="1" max="50" required />
+                </div>
+              </div>
+
+              <div class="row g-2 mb-3">
+                <div class="col-12 col-md-6">
+                  <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Consultation Fee (₹ INR)</label>
+                  <input type="number" id="doc-fee" class="form-control" placeholder="1000" min="200" step="50" required />
+                </div>
+                <div class="col-12 col-md-6">
+                  <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Hospital / Clinic Area</label>
+                  <select id="doc-area" class="form-select" required>
+                    <option value="Indiranagar">Indiranagar, Bengaluru</option>
+                    <option value="Koramangala">Koramangala, Bengaluru</option>
+                    <option value="Whitefield">Whitefield, Bengaluru</option>
+                    <option value="Jayanagar">Jayanagar, Bengaluru</option>
+                    <option value="Hebbal">Hebbal, Bengaluru</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Email Address</label>
+                <input type="email" id="doc-email" class="form-control" placeholder="dr.name@kynovia.health" required />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Mobile Number (+91)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white border-end-0 font-weight-bold text-muted" style="font-size: 12px;">+91</span>
+                  <input type="tel" id="doc-mobile" class="form-control border-start-0" placeholder="98765 43210" maxlength="10" required />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label font-headline font-weight-bold" style="font-size: 0.8rem;">Password</label>
+                <input type="password" id="doc-pass" class="form-control" placeholder="Minimum 8 characters" required />
+              </div>
+
+              <button type="submit" id="doc-submit-btn" class="btn kyn-btn-primary w-100 py-2 font-weight-bold mt-2">
+                Register Doctor Workstation
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+
+  <script>
+    // Patient Form Submit
+    document.getElementById('patient-register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const full_name = document.getElementById('pat-name').value.trim();
+      const email = document.getElementById('pat-email').value.trim();
+      const mobile = document.getElementById('pat-mobile').value.trim();
+      const password = document.getElementById('pat-pass').value.trim();
+      const btn = document.getElementById('pat-submit-btn');
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Registering...';
+
+      try {
+        const res = await API.register({
+          full_name,
+          email,
+          mobile: `+91${mobile}`,
+          password,
+          role: 'patient'
+        });
+        UI.showToast('Account created successfully! Logging you in...', 'success');
+        // Auto-login
+        await API.login(email, password);
+        setTimeout(() => { window.location.href = '/'; }, 600);
+      } catch (err) {
+        UI.showToast(err.message || 'Registration failed.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = 'Register as Patient';
+      }
+    });
+
+    // Doctor Form Submit
+    document.getElementById('doctor-register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const full_name = document.getElementById('doc-name').value.trim();
+      const specialization = document.getElementById('doc-specialty').value;
+      const reg_number = document.getElementById('doc-reg').value.trim();
+      const experience_years = Number(document.getElementById('doc-exp').value);
+      const consultation_fee_inr = Number(document.getElementById('doc-fee').value);
+      const area = document.getElementById('doc-area').value;
+      const email = document.getElementById('doc-email').value.trim();
+      const mobile = document.getElementById('doc-mobile').value.trim();
+      const password = document.getElementById('doc-pass').value.trim();
+      const btn = document.getElementById('doc-submit-btn');
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Registering...';
+
+      try {
+        const res = await API.register({
+          full_name,
+          email,
+          mobile: `+91${mobile}`,
+          password,
+          role: 'doctor',
+          professional_details: {
+            specialization,
+            registration_number: reg_number,
+            experience_years,
+            consultation_fee_inr,
+            area,
+            hospital_affiliation: `Kynovia Specialist Center (${area})`,
+          }
+        });
+        UI.showToast('Doctor workstation created! Logging you in...', 'success');
+        await API.login(email, password);
+        setTimeout(() => { window.location.href = '/doctor-dashboard.html'; }, 600);
+      } catch (err) {
+        UI.showToast(err.message || 'Registration failed.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = 'Register Doctor Workstation';
+      }
+    });
+  </script>
+</body>
+</html>
